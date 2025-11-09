@@ -27,11 +27,22 @@ itemMaisMovimentado :: [LogEntry] -> Maybe (String, Int)
 itemMaisMovimentado [] = Nothing
 itemMaisMovimentado logs =
     let ids = map extrairID logs
+        validIDs = filter (/= "N/A") ids
     -- Agrupa os IDs iguais
-    in Just $ findMostCommon (group (sort ids))
+    in if null validIDs
+       then Nothing
+       else
+        Just $ findMostCommon (group (sort validIDs))
   where
     extrairID :: LogEntry -> String
-    extrairID log = (words (detalhes log)) !! 3
+    extrairID log =
+        if acao log == QueryFail
+        then "N/A"
+        else
+            let ws = words (detalhes log)
+            in if length ws > 3
+               then ws !! 3
+               else "N/A"
     
     -- Encontra o grupo mais longo
     findMostCommon :: [[String]] -> (String, Int)
