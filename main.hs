@@ -1,4 +1,6 @@
--- Módulos do Projeto
+module Main where
+
+-- Módulos do projeto
 import Inventario
 import Logica
 
@@ -8,15 +10,14 @@ import Data.Time (getCurrentTime, UTCTime)
 import System.IO (hSetBuffering, stdout, BufferMode(NoBuffering))
 import Control.Exception (catch, IOException)
 import Text.Read (readMaybe)
+import System.Exit (exitSuccess) 
 
 -- Constantes para os nomes dos arquivos
 invFile :: FilePath
 invFile = "Inventario.dat"
-
 logFile :: FilePath
 logFile = "Auditoria.log"
 
--- carregar o inventário do disco
 loadInventario :: IO Inventario
 loadInventario = (do
     putStrLn $ "Carregando " ++ invFile ++ "..."
@@ -30,7 +31,6 @@ loadInventario = (do
             return Map.empty
     ) `catch` handleReadError Map.empty
 
--- carregar os logs do disco
 loadLogs :: IO [LogEntry]
 loadLogs = (do
     putStrLn $ "Carregando " ++ logFile ++ "..."
@@ -40,11 +40,48 @@ loadLogs = (do
     return logs
     ) `catch` handleReadError []
 
--- Handler para catch
 handleReadError :: a -> IOException -> IO a
 handleReadError defaultVal e = do
     putStrLn $ "Aviso: Arquivo não encontrado ou permissão negada. Iniciando com dados vazios."
     return defaultVal
+
+mainLoop :: Inventario -> [LogEntry] -> IO ()
+mainLoop inv logs = do
+    putStr "\nComando (add, remove, update, report, sair): "
+    comando <- getLine
+    
+    time <- getCurrentTime
+    
+    processCommand comando time inv logs
+
+
+processCommand :: String -> UTCTime -> Inventario -> [LogEntry] -> IO ()
+processCommand comando time inv logs = do
+    case comando of
+        "add" -> do
+            putStrLn "--- (Lógica 'add' ainda não implementada) ---"
+            mainLoop inv logs -- Volta ao loop com o estado antigo
+
+        "remove" -> do
+            putStrLn "--- (Lógica 'remove' ainda não implementada) ---"
+            mainLoop inv logs
+
+        "update" -> do
+            putStrLn "--- (Lógica 'update' ainda não implementada) ---"
+            mainLoop inv logs
+        
+        "report" -> do
+            putStrLn "--- (Lógica 'report' ainda não implementada) ---"
+            mainLoop inv logs
+
+        "sair" -> do
+            putStrLn "Encerrando..."
+            exitSuccess
+
+        _ -> do
+            putStrLn "Erro: Comando inválido."
+            mainLoop inv logs
+
 
 main :: IO ()
 main = do
@@ -53,5 +90,7 @@ main = do
     inv <- loadInventario
     logs <- loadLogs
     
-    putStrLn "\nSistema de Gerenciamento de Inventário "
+    putStrLn "\n--- Sistema de Gerenciamento de Inventário ---"
     putStrLn "Comandos: add, remove, update, report, sair"
+    
+    mainLoop inv logs
