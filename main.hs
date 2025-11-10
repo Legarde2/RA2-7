@@ -95,7 +95,7 @@ processCommand comando time inv logs = do
                     putStrLn "Erro: Quantidade deve ser um número."
                     mainLoop inv logs
                 Just qtde -> do
-                    let resultado = addItem time id nome qtde cat inv
+                    let resultado = additem time id nome qtde cat inv
                     handleResultado resultado inv logs
 
         "remove" -> do
@@ -109,7 +109,7 @@ processCommand comando time inv logs = do
                     putStrLn "Erro: Quantidade deve ser um número."
                     mainLoop inv logs
                 Just qtde -> do
-                    let resultado = removerItem time id qtde inv
+                    let resultado = removeltem time id qtde inv
                     handleResultado resultado inv logs
 
         "update" -> do
@@ -123,7 +123,7 @@ processCommand comando time inv logs = do
                     putStrLn "Erro: Quantidade deve ser um número."
                     mainLoop inv logs
                 Just qtde -> do
-                    let resultado = atualizarQuantidade time id qtde inv
+                    let resultado = updateQty time id qtde inv
                     handleResultado resultado inv logs
         
         "report" -> do
@@ -190,7 +190,7 @@ handleReport inv logs = do
             putStr "Digite o ID do item para ver o histórico: "
             itemID <- getLine
             putStrLn $ "\n[Relatório: Histórico do Item " ++ itemID ++ "]"
-            let historico = historicoPorItem itemID logs
+            let historico = historicoPorltem itemID logs
             if null historico
             then putStrLn "(Nenhum histórico encontrado para este item)"
             else mapM_ print historico

@@ -7,14 +7,14 @@ import Inventario
 type ResultadoOperacao = (Inventario, LogEntry)
 
 -- Função para adicionar um novo item
-addItem :: UTCTime
+additem :: UTCTime
         -> String
         -> String
         -> Int
         -> String
         -> Inventario
         -> Either String ResultadoOperacao
-addItem time newID newNome newQtde newCat inv =
+additem time newID newNome newQtde newCat inv =
     if Map.member newID inv
     then Left "Erro: Item com este ID já existe."
     else
@@ -34,12 +34,12 @@ addItem time newID newNome newQtde newCat inv =
         in Right (newInv, logEntry)
 
 -- Função pura para remover um item
-removerItem :: UTCTime
+removeltem :: UTCTime
             -> String
             -> Int
             -> Inventario
             -> Either String ResultadoOperacao
-removerItem time itemID qtdeRemover inv =
+removeltem time itemID qtdeRemover inv =
     case Map.lookup itemID inv of
         -- Caso 1: Item não encontrado
         Nothing -> Left "Erro: Item não encontrado."
@@ -62,12 +62,12 @@ removerItem time itemID qtdeRemover inv =
 
 
 -- Função pura para atualizar a quantidade de um item
-atualizarQuantidade :: UTCTime
+updateQty :: UTCTime
                     -> String
                     -> Int
                     -> Inventario
                     -> Either String ResultadoOperacao
-atualizarQuantidade time itemID novaQtde inv =
+updateQty time itemID novaQtde inv =
     if novaQtde < 0
     then Left "Erro: Quantidade não pode ser negativa."
     else

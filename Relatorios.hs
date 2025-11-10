@@ -1,6 +1,6 @@
 module Relatorios where
 
-import Inventario (LogEntry(..), StatusLog(..), acao, detalhes, status)
+import Inventario (LogEntry(..), StatusLog(..), AcaoLog(..), acao, detalhes, status)
 import Data.List (sortOn, groupBy, group, sort)
 import Data.Time (UTCTime)
 
@@ -14,8 +14,8 @@ logsDeErro todosOsLogs = filter ehFalha todosOsLogs
         Sucesso -> False
 
 -- Função para filtrar histórico de um item específico
-historicoPorItem :: String -> [LogEntry] -> [LogEntry]
-historicoPorItem itemID logs = filter (pertenceAoItem) logs
+historicoPorltem :: String -> [LogEntry] -> [LogEntry]
+historicoPorltem itemID logs = filter (pertenceAoItem) logs
   where
     pertenceAoItem :: LogEntry -> Bool
     pertenceAoItem log =
